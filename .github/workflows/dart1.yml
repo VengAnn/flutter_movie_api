@@ -11,10 +11,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Read Flutter Version
+        id: flutter_version
+        run: echo "::set-output name=version::$(cat .flutter-version)"
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: $(cat .flutter-version) # Dynamically fetch Flutter version
+          flutter-version: ${{ steps.flutter_version.outputs.version }}
+          architecture: x64
 
       - name: Get dependencies
         run: flutter pub get
